@@ -1,0 +1,9 @@
+agentic/
+__pycache__/
+*.pyc
+.env
+.pytest_cache/
+.ipynb_checkpoints/
+data/*
+!data/.gitkeep
+.vscode/
