@@ -195,3 +195,95 @@ def test_planner_reraises_after_three_transient_retries(
     assert caught.value is error
     assert waits == [2, 4, 8]
     assert structured_model.invoke.call_count == 4
+
+
+def build_model_history(
+    models: list[str],
+) -> list[tuple[ExperimentConfig, ExperimentResult]]:
+    return [
+        (
+            ExperimentConfig(
+                experiment_id=f"{model}-experiment",
+                task_type="classification",
+                target_column="target",
+                model=model,
+                preprocessing=["standard_scaler"],
+                hyperparameters={},
+                evaluation_metric="accuracy",
+            ),
+            ExperimentResult(
+                experiment_id=f"{model}-experiment",
+                status="success",
+                metrics={"accuracy": 0.8},
+                training_time_seconds=0.1,
+                observations=[],
+            ),
+        )
+        for model in models
+    ]
+
+
+def test_fallback_provider_does_not_call_gemini(
+    dataset_profile: DatasetProfile, monkeypatch
+) -> None:
+    monkeypatch.setenv("LLM_PROVIDER", "fallback")
+    gemini = MagicMock(side_effect=AssertionError("Gemini should not be called"))
+    monkeypatch.setattr(planner_module, "ChatGoogleGenerativeAI", gemini)
+
+    decision = ExperimentPlanner().plan("Classify records", dataset_profile, [])
+
+    assert isinstance(decision, AgentDecision)
+    gemini.assert_not_called()
+
+
+def test_fallback_selects_logistic_regression_first(
+    dataset_profile: DatasetProfile, monkeypatch
+) -> None:
+    monkeypatch.setenv("LLM_PROVIDER", "fallback")
+
+    decision = ExperimentPlanner().plan("Classify records", dataset_profile, [])
+
+    assert decision.model == "logistic_regression"
+
+
+def test_fallback_selects_random_forest_after_logistic(
+    dataset_profile: DatasetProfile, monkeypatch
+) -> None:
+    monkeypatch.setenv("LLM_PROVIDER", "fallback")
+
+    decision = ExperimentPlanner().plan(
+        "Classify records",
+        dataset_profile,
+        build_model_history(["logistic_regression"]),
+    )
+
+    assert decision.model == "random_forest"
+
+
+def test_fallback_selects_gradient_boosting_after_previous_models(
+    dataset_profile: DatasetProfile, monkeypatch
+) -> None:
+    monkeypatch.setenv("LLM_PROVIDER", "fallback")
+
+    decision = ExperimentPlanner().plan(
+        "Classify records",
+        dataset_profile,
+        build_model_history(["logistic_regression", "random_forest"]),
+    )
+
+    assert decision.model == "gradient_boosting"
+
+
+def test_fallback_avoids_repeating_existing_models(
+    dataset_profile: DatasetProfile, monkeypatch
+) -> None:
+    monkeypatch.setenv("LLM_PROVIDER", "fallback")
+    existing_models = ["logistic_regression", "random_forest"]
+
+    decision = ExperimentPlanner().plan(
+        "Classify records",
+        dataset_profile,
+        build_model_history(existing_models),
+    )
+
+    assert decision.model not in existing_models

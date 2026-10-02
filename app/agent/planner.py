@@ -16,7 +16,12 @@ class ExperimentPlanner:
 
     def __init__(self) -> None:
         load_dotenv()
-        self.model_name = os.getenv("LLM_MODEL", "gemini-2.5-flash")
+        self.provider = os.getenv("LLM_PROVIDER", "gemini")
+        if self.provider not in {"gemini", "fallback"}:
+            raise ValueError(
+                "LLM_PROVIDER must be either 'gemini' or 'fallback'"
+            )
+        self.model_name = os.getenv("LLM_MODEL", "gemini-3.8-flash")
         self.api_key = os.getenv("GEMINI_API_KEY")
 
     def plan(
@@ -33,6 +38,9 @@ class ExperimentPlanner:
             }
             for config, result in experiment_history
         ]
+        if self.provider == "fallback":
+            return self._fallback_decision(objective, experiment_history)
+
         prompt = f"""
 You are selecting the next machine learning experiment for an experimentation system.
 
@@ -76,6 +84,65 @@ Return only a structured decision matching the AgentDecision schema.
                 time.sleep(2 ** (attempt + 1))
 
         raise RuntimeError("Planner invocation did not complete")
+
+    @staticmethod
+    def _fallback_decision(
+        objective: str,
+        experiment_history: list[tuple[ExperimentConfig, ExperimentResult]],
+    ) -> AgentDecision:
+        """Select an experiment with the deterministic development fallback."""
+        tried_models = {config.model for config, _ in experiment_history}
+        configurations = {
+            "logistic_regression": {
+                "C": 1.0,
+                "max_iter": 200,
+                "solver": "lbfgs",
+            },
+            "random_forest": {
+                "n_estimators": 200,
+                "random_state": 42,
+                "n_jobs": -1,
+            },
+            "gradient_boosting": {
+                "n_estimators": 100,
+                "learning_rate": 0.1,
+                "random_state": 42,
+            },
+        }
+        for model in (
+            "logistic_regression",
+            "random_forest",
+            "gradient_boosting",
+        ):
+            if model not in tried_models:
+                return AgentDecision(
+                    model=model,
+                    preprocessing=["standard_scaler"],
+                    hyperparameters=configurations[model],
+                    evaluation_metric="accuracy",
+                    reason=(
+                        "Deterministic development/demo fallback selected "
+                        f"{model} because it has not been tried yet for "
+                        f"the objective: {objective}"
+                    ),
+                )
+
+        return AgentDecision(
+            model="logistic_regression",
+            preprocessing=["standard_scaler"],
+            hyperparameters={
+                "C": 0.1,
+                "max_iter": 200,
+                "solver": "lbfgs",
+            },
+            evaluation_metric="accuracy",
+            reason=(
+                "Deterministic development/demo fallback selected "
+                "logistic_regression with C=0.1 because all three supported "
+                "models have already been tried for the objective: "
+                f"{objective}"
+            ),
+        )
 
     @staticmethod
     def _is_transient_error(error: Exception) -> bool:

@@ -6,3 +6,6 @@ pydantic
 langgraph
 langchain-openai
 langchain-google-genai
+fastapi
+uvicorn
+python-multipart
