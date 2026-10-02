@@ -1,12 +1,20 @@
 """Execution of the currently supported ML experiment."""
 
 import pandas as pd
+from sklearn.ensemble import GradientBoostingClassifier, RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import StratifiedKFold, cross_validate
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
 from app.schemas.experiment import ExperimentConfig, ExperimentResult
+
+
+MODEL_REGISTRY: dict[str, type] = {
+    "logistic_regression": LogisticRegression,
+    "random_forest": RandomForestClassifier,
+    "gradient_boosting": GradientBoostingClassifier,
+}
 
 
 class ExperimentExecutor:
@@ -26,10 +34,11 @@ class ExperimentExecutor:
 
             features = data.drop(columns=[config.target_column])
             target = data[config.target_column]
+            model = MODEL_REGISTRY[config.model](**config.hyperparameters)
             pipeline = Pipeline(
                 steps=[
                     ("preprocessing", StandardScaler()),
-                    ("model", LogisticRegression(**config.hyperparameters)),
+                    ("model", model),
                 ]
             )
             cross_validation = StratifiedKFold(
@@ -64,8 +73,11 @@ class ExperimentExecutor:
     def _validate_config(config: ExperimentConfig) -> None:
         if config.task_type != "classification":
             raise ValueError("Only classification experiments are supported")
-        if config.model != "logistic_regression":
-            raise ValueError("Only the logistic_regression model is supported")
+        if config.model not in MODEL_REGISTRY:
+            raise ValueError(
+                "Model must be one of: logistic_regression, random_forest, "
+                "gradient_boosting"
+            )
         if config.preprocessing != ["standard_scaler"]:
             raise ValueError("Only standard_scaler preprocessing is supported")
         if config.evaluation_metric != "accuracy":

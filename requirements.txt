@@ -3,3 +3,6 @@ numpy
 scikit-learn
 python-dotenv
 pydantic
+langgraph
+langchain-openai
+langchain-google-genai

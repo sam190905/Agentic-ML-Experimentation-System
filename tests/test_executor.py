@@ -38,6 +38,47 @@ def test_successful_execution() -> None:
     assert result.status == "success"
 
 
+def test_logistic_regression_executes_successfully() -> None:
+    result = ExperimentExecutor().execute(
+        build_iris_data(),
+        build_config(model="logistic_regression"),
+    )
+
+    assert result.status == "success"
+
+
+def test_random_forest_executes_successfully() -> None:
+    result = ExperimentExecutor().execute(
+        build_iris_data(),
+        build_config(
+            model="random_forest",
+            hyperparameters={"n_estimators": 10, "random_state": 42},
+        ),
+    )
+
+    assert result.status == "success"
+
+
+def test_gradient_boosting_executes_successfully() -> None:
+    result = ExperimentExecutor().execute(
+        build_iris_data(),
+        build_config(
+            model="gradient_boosting",
+            hyperparameters={"n_estimators": 10, "random_state": 42},
+        ),
+    )
+
+    assert result.status == "success"
+
+
+def test_unsupported_model_returns_failed_result() -> None:
+    result = ExperimentExecutor().execute(
+        build_iris_data(), build_config(model="unsupported_model")
+    )
+
+    assert result.status == "failed"
+
+
 def test_accuracy_exists() -> None:
     result = ExperimentExecutor().execute(build_iris_data(), build_config())
 
