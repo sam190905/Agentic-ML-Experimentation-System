@@ -1,0 +1,74 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: "Manrope", "Avenir Next", sans-serif;
+  color: #1d2628;
+  background: #f5f7f5;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background:
+    radial-gradient(circle at 82% 0%, rgba(216, 238, 228, 0.66), transparent 28rem),
+    radial-gradient(circle at 4% 74%, rgba(248, 227, 220, 0.48), transparent 24rem),
+    #f5f7f5;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+::selection {
+  color: #1d2628;
+  background: #d8eee4;
+}
+
+@layer components {
+  .eyebrow {
+    @apply font-mono text-[10px] font-medium uppercase tracking-[0.18em] text-slate-500;
+  }
+
+  .panel {
+    @apply rounded-2xl border border-slate-200/80 bg-white/85 shadow-soft backdrop-blur-sm;
+  }
+
+  .field-label {
+    @apply mb-2 block text-xs font-bold uppercase tracking-[0.1em] text-slate-500;
+  }
+
+  .field-control {
+    @apply w-full rounded-xl border border-slate-200 bg-slate-50/70 px-3.5 py-3 text-sm text-ink outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-emerald-500 focus:bg-white focus:ring-4 focus:ring-emerald-500/10;
+  }
+}
+
+@keyframes drift-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 0.4; transform: scale(0.85); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+.animate-drift-in {
+  animation: drift-in 500ms ease-out both;
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
