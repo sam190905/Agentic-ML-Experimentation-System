@@ -41,6 +41,7 @@ def test_graph_runs_until_max_experiments(monkeypatch, tmp_path) -> None:
             config_id="gb-slow",
             reason="Compare a boosting configuration after evaluating the tree ensemble.",
         ),
+        
     ]
     monkeypatch.setattr(
         graph_module,
