@@ -13,9 +13,27 @@ def test_valid_classification_experiment_config_can_be_created() -> None:
         preprocessing=["standard_scaler"],
         hyperparameters={"C": 1.0},
         evaluation_metric="accuracy",
+        planning_reason="Start with a regularized linear baseline.",
     )
 
     assert config.task_type == "classification"
+    assert config.planning_reason == "Start with a regularized linear baseline."
+
+
+def test_legacy_experiment_config_defaults_missing_planning_reason() -> None:
+    config = ExperimentConfig.model_validate(
+        {
+            "experiment_id": "experiment-legacy",
+            "task_type": "classification",
+            "target_column": "target",
+            "model": "logistic_regression",
+            "preprocessing": ["standard_scaler"],
+            "hyperparameters": {"C": 1.0},
+            "evaluation_metric": "accuracy",
+        }
+    )
+
+    assert config.planning_reason == ""
 
 
 def test_invalid_task_type_is_rejected() -> None:

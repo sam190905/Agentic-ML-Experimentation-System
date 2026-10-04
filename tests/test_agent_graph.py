@@ -96,3 +96,11 @@ def test_graph_runs_until_max_experiments(monkeypatch, tmp_path) -> None:
         {"C": 0.1, "max_iter": 1000},
         {"C": 10.0, "max_iter": 1000},
     ]
+    assert [
+        experiment_config.planning_reason
+        for experiment_config, _ in result["experiment_history"]
+    ] == [
+        "Start with a baseline configuration.",
+        "Try stronger regularization.",
+        "Try weaker regularization.",
+    ]

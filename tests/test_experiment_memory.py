@@ -1,3 +1,6 @@
+import sqlite3
+import json
+
 import pytest
 
 from app.memory.experiment_memory import ExperimentMemory
@@ -13,6 +16,7 @@ def build_config(experiment_id: str) -> ExperimentConfig:
         preprocessing=["standard_scaler"],
         hyperparameters={"max_iter": 1000},
         evaluation_metric="accuracy",
+        planning_reason="Use a simple baseline before exploring alternatives.",
     )
 
 
@@ -45,6 +49,40 @@ def test_get_missing_experiment_returns_none(tmp_path) -> None:
     memory = ExperimentMemory(tmp_path / "experiments.db")
 
     assert memory.get_experiment("missing") is None
+
+
+def test_get_legacy_experiment_without_planning_reason(tmp_path) -> None:
+    database_path = tmp_path / "experiments.db"
+    memory = ExperimentMemory(database_path)
+    legacy_config = {
+        "experiment_id": "legacy",
+        "task_type": "classification",
+        "target_column": "target",
+        "model": "logistic_regression",
+        "preprocessing": ["standard_scaler"],
+        "hyperparameters": {"C": 1.0},
+        "evaluation_metric": "accuracy",
+    }
+    result = build_result("legacy", {"accuracy": 0.8})
+    with sqlite3.connect(database_path) as connection:
+        connection.execute(
+            """
+            INSERT INTO experiments (
+                experiment_id, config_json, result_json, created_at
+            ) VALUES (?, ?, ?, ?)
+            """,
+            (
+                "legacy",
+                json.dumps(legacy_config),
+                result.model_dump_json(),
+                "2026-01-01T00:00:00+00:00",
+            ),
+        )
+
+    stored = memory.get_experiment("legacy")
+
+    assert stored is not None
+    assert stored[0].planning_reason == ""
 
 
 def test_duplicate_experiment_id_is_rejected(tmp_path) -> None:

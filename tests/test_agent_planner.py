@@ -244,6 +244,11 @@ def test_fallback_selects_logistic_regression_first(
     decision = ExperimentPlanner().plan("Classify records", dataset_profile, [])
 
     assert decision.model == "logistic_regression"
+    assert decision.reason == (
+        "Deterministic development/demo fallback selected "
+        "logistic_regression because it has not been tried yet for "
+        "the objective: Classify records"
+    )
 
 
 def test_fallback_selects_random_forest_after_logistic(

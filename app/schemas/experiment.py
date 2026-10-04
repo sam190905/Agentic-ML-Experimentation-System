@@ -15,6 +15,7 @@ class ExperimentConfig(BaseModel):
     preprocessing: list[str]
     hyperparameters: dict[str, Any]
     evaluation_metric: str = Field(min_length=1)
+    planning_reason: str = ""
 
 
 class ExperimentResult(BaseModel):

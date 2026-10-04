@@ -32,6 +32,7 @@ def experiment_history() -> list[tuple[ExperimentConfig, ExperimentResult]]:
         preprocessing=["standard_scaler"],
         hyperparameters={"C": 1.0},
         evaluation_metric="accuracy",
+        planning_reason="Start with a baseline.",
     )
     first_result = ExperimentResult(
         experiment_id="experiment-1",
@@ -48,6 +49,7 @@ def experiment_history() -> list[tuple[ExperimentConfig, ExperimentResult]]:
         preprocessing=["standard_scaler"],
         hyperparameters={"n_estimators": 10},
         evaluation_metric="accuracy",
+        planning_reason="Try a tree-based model for a different model family.",
     )
     second_result = ExperimentResult(
         experiment_id="experiment-2",
@@ -99,6 +101,9 @@ def test_report_contains_all_experiments(
     ] == ["experiment-1", "experiment-2"]
     assert report["experiments"][0]["configuration"]["model"] == (
         "logistic_regression"
+    )
+    assert report["experiments"][0]["configuration"]["planning_reason"] == (
+        "Start with a baseline."
     )
 
 

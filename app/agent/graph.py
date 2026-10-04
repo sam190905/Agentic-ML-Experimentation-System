@@ -41,6 +41,7 @@ def plan_node(state: AgentState) -> dict[str, Any]:
         preprocessing=decision.preprocessing,
         hyperparameters=decision.hyperparameters,
         evaluation_metric=decision.evaluation_metric,
+        planning_reason=decision.reason,
     )
     return {"current_experiment": experiment}
 
