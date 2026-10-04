@@ -9,6 +9,7 @@ class ExperimentConfig(BaseModel):
     """Configuration for an ML experiment before execution."""
 
     experiment_id: str = Field(min_length=1)
+    config_id: str = ""
     task_type: Literal["classification", "regression"]
     target_column: str = Field(min_length=1)
     model: str = Field(min_length=1)

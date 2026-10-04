@@ -31,9 +31,11 @@ class ExperimentPlanner:
         experiment_history: list[tuple[ExperimentConfig, ExperimentResult]],
     ) -> AgentDecision:
         """Ask the LLM to choose a supported experiment."""
+        from app.experimentation.catalog import CATALOG, get_baseline_ordering
+
         history = [
             {
-                "experiment": config.model_dump(),
+                "config_id": config.config_id,
                 "result": result.model_dump(),
             }
             for config, result in experiment_history
@@ -41,23 +43,20 @@ class ExperimentPlanner:
         if self.provider == "fallback":
             return self._fallback_decision(objective, experiment_history)
 
+        catalog_str = "\n".join(
+            f'- config_id: "{entry.config_id}" | Model: {entry.model} | Hyperparameters: {entry.hyperparameters}'
+            for entry in CATALOG
+        )
+
         prompt = f"""
 You are selecting the next machine learning experiment for an experimentation system.
 
 Analyze the dataset profile, consider the user objective, and inspect the previous
-experiment results. Avoid repeating an identical configuration. Choose one supported
-experiment and explain why it was selected.
+experiment results. Avoid repeating an identical configuration (do not reuse a config_id that is in the history).
+Choose one supported experiment config_id and explain why it was selected.
 
-Supported models:
-- logistic_regression
-- random_forest
-- gradient_boosting
-
-Supported preprocessing:
-- standard_scaler
-
-Supported evaluation metric:
-- accuracy
+Available experiment configurations:
+{catalog_str}
 
 Dataset profile:
 {dataset_profile.model_dump_json()}
@@ -77,7 +76,10 @@ Return only a structured decision matching the AgentDecision schema.
         ).with_structured_output(AgentDecision)
         for attempt in range(4):
             try:
-                return structured_model.invoke(prompt)
+                decision = structured_model.invoke(prompt)
+                # Validation is handled upstream in graph.py, 
+                # but if we wanted to validate here we could.
+                return decision
             except Exception as error:
                 if attempt == 3 or not self._is_transient_error(error):
                     raise
@@ -91,55 +93,29 @@ Return only a structured decision matching the AgentDecision schema.
         experiment_history: list[tuple[ExperimentConfig, ExperimentResult]],
     ) -> AgentDecision:
         """Select an experiment with the deterministic development fallback."""
-        tried_models = {config.model for config, _ in experiment_history}
-        configurations = {
-            "logistic_regression": {
-                "C": 1.0,
-                "max_iter": 200,
-                "solver": "lbfgs",
-            },
-            "random_forest": {
-                "n_estimators": 200,
-                "random_state": 42,
-                "n_jobs": -1,
-            },
-            "gradient_boosting": {
-                "n_estimators": 100,
-                "learning_rate": 0.1,
-                "random_state": 42,
-            },
-        }
-        for model in (
-            "logistic_regression",
-            "random_forest",
-            "gradient_boosting",
-        ):
-            if model not in tried_models:
+        from app.experimentation.catalog import get_baseline_ordering
+        
+        tried_config_ids = {config.config_id for config, _ in experiment_history}
+        ordering = get_baseline_ordering()
+        
+        for entry in ordering:
+            if entry.config_id not in tried_config_ids:
                 return AgentDecision(
-                    model=model,
-                    preprocessing=["standard_scaler"],
-                    hyperparameters=configurations[model],
-                    evaluation_metric="accuracy",
+                    config_id=entry.config_id,
                     reason=(
                         "Deterministic development/demo fallback selected "
-                        f"{model} because it has not been tried yet for "
+                        f"{entry.config_id} because it has not been tried yet for "
                         f"the objective: {objective}"
                     ),
                 )
-
+                
+        # If all tried, just repeat the first one
+        entry = ordering[0]
         return AgentDecision(
-            model="logistic_regression",
-            preprocessing=["standard_scaler"],
-            hyperparameters={
-                "C": 0.1,
-                "max_iter": 200,
-                "solver": "lbfgs",
-            },
-            evaluation_metric="accuracy",
+            config_id=entry.config_id,
             reason=(
                 "Deterministic development/demo fallback selected "
-                "logistic_regression with C=0.1 because all three supported "
-                "models have already been tried for the objective: "
+                f"{entry.config_id} because all configurations have already been tried for the objective: "
                 f"{objective}"
             ),
         )

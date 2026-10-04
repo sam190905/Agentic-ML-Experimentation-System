@@ -32,15 +32,20 @@ def plan_node(state: AgentState) -> dict[str, Any]:
         dataset_profile,
         state["experiment_history"],
     )
+    
+    from app.experimentation.catalog import get_catalog_entry
+    catalog_entry = get_catalog_entry(decision.config_id)
+    
     experiment_number = state["experiment_count"] + 1
     experiment = ExperimentConfig(
         experiment_id=f"{state['run_id']}-experiment-{experiment_number}",
+        config_id=catalog_entry.config_id,
         task_type=dataset_profile.task_type,
         target_column=dataset_profile.target_column,
-        model=decision.model,
-        preprocessing=decision.preprocessing,
-        hyperparameters=decision.hyperparameters,
-        evaluation_metric=decision.evaluation_metric,
+        model=catalog_entry.model,
+        preprocessing=catalog_entry.preprocessing,
+        hyperparameters=catalog_entry.hyperparameters,
+        evaluation_metric=catalog_entry.evaluation_metric,
         planning_reason=decision.reason,
     )
     return {"current_experiment": experiment}

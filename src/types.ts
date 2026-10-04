@@ -19,6 +19,7 @@ export type ExperimentConfiguration = {
   preprocessing: string[];
   hyperparameters: Record<string, string | number | boolean>;
   evaluation_metric: string;
+  planning_reason?: string;
 };
 
 export type ExperimentResult = {

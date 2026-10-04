@@ -53,10 +53,7 @@ def experiment_history() -> list[tuple[ExperimentConfig, ExperimentResult]]:
 @pytest.fixture
 def mocked_structured_model(monkeypatch) -> tuple[MagicMock, AgentDecision]:
     decision = AgentDecision(
-        model="random_forest",
-        preprocessing=["standard_scaler"],
-        hyperparameters={"n_estimators": 100},
-        evaluation_metric="accuracy",
+        config_id="rf-default",
         reason="A tree-based model provides a useful alternative baseline.",
     )
     structured_model = MagicMock()
@@ -66,6 +63,7 @@ def mocked_structured_model(monkeypatch) -> tuple[MagicMock, AgentDecision]:
     monkeypatch.setattr(
         planner_module, "ChatGoogleGenerativeAI", chat_google
     )
+    monkeypatch.setenv("LLM_PROVIDER", "gemini")
     return structured_model, decision
 
 
@@ -129,11 +127,8 @@ def test_planner_passes_objective_to_prompt(
 
 def test_invalid_agent_decision_is_rejected() -> None:
     with pytest.raises(ValidationError):
+        # Validation error if missing required fields
         AgentDecision(
-            model="unsupported_model",
-            preprocessing=["standard_scaler"],
-            hyperparameters={},
-            evaluation_metric="accuracy",
             reason="Unsupported model",
         )
 
@@ -197,29 +192,30 @@ def test_planner_reraises_after_three_transient_retries(
     assert structured_model.invoke.call_count == 4
 
 
-def build_model_history(
-    models: list[str],
+def build_config_history(
+    config_ids: list[str],
 ) -> list[tuple[ExperimentConfig, ExperimentResult]]:
     return [
         (
             ExperimentConfig(
-                experiment_id=f"{model}-experiment",
+                experiment_id=f"{c_id}-experiment",
+                config_id=c_id,
                 task_type="classification",
                 target_column="target",
-                model=model,
+                model="some_model",
                 preprocessing=["standard_scaler"],
                 hyperparameters={},
                 evaluation_metric="accuracy",
             ),
             ExperimentResult(
-                experiment_id=f"{model}-experiment",
+                experiment_id=f"{c_id}-experiment",
                 status="success",
                 metrics={"accuracy": 0.8},
                 training_time_seconds=0.1,
                 observations=[],
             ),
         )
-        for model in models
+        for c_id in config_ids
     ]
 
 
@@ -243,10 +239,10 @@ def test_fallback_selects_logistic_regression_first(
 
     decision = ExperimentPlanner().plan("Classify records", dataset_profile, [])
 
-    assert decision.model == "logistic_regression"
+    assert decision.config_id == "lr-default"
     assert decision.reason == (
         "Deterministic development/demo fallback selected "
-        "logistic_regression because it has not been tried yet for "
+        "lr-default because it has not been tried yet for "
         "the objective: Classify records"
     )
 
@@ -259,10 +255,10 @@ def test_fallback_selects_random_forest_after_logistic(
     decision = ExperimentPlanner().plan(
         "Classify records",
         dataset_profile,
-        build_model_history(["logistic_regression"]),
+        build_config_history(["lr-default"]),
     )
 
-    assert decision.model == "random_forest"
+    assert decision.config_id == "rf-default"
 
 
 def test_fallback_selects_gradient_boosting_after_previous_models(
@@ -273,22 +269,22 @@ def test_fallback_selects_gradient_boosting_after_previous_models(
     decision = ExperimentPlanner().plan(
         "Classify records",
         dataset_profile,
-        build_model_history(["logistic_regression", "random_forest"]),
+        build_config_history(["lr-default", "rf-default"]),
     )
 
-    assert decision.model == "gradient_boosting"
+    assert decision.config_id == "gb-default"
 
 
 def test_fallback_avoids_repeating_existing_models(
     dataset_profile: DatasetProfile, monkeypatch
 ) -> None:
     monkeypatch.setenv("LLM_PROVIDER", "fallback")
-    existing_models = ["logistic_regression", "random_forest"]
+    existing_configs = ["lr-default", "rf-default"]
 
     decision = ExperimentPlanner().plan(
         "Classify records",
         dataset_profile,
-        build_model_history(existing_models),
+        build_config_history(existing_configs),
     )
 
-    assert decision.model not in existing_models
+    assert decision.config_id not in existing_configs

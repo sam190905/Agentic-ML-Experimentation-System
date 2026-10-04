@@ -471,6 +471,15 @@ function DetailPanel({ experiment }: { experiment: Experiment | null }) {
           <p className="mt-0.5 text-lg font-extrabold text-emerald-800">{formatScore(scoreFor(experiment))}</p>
         </div>
       </div>
+      {configuration.planning_reason && (
+        <div className="mt-5 rounded-xl border border-emerald-200/80 bg-emerald-50/50 px-4 py-4">
+          <div className="flex items-center gap-2">
+            <Sparkles className="text-emerald-700" size={14} />
+            <p className="field-label mb-0">Why this experiment?</p>
+          </div>
+          <p className="mt-2 text-sm leading-6 text-slate-600">{configuration.planning_reason}</p>
+        </div>
+      )}
       <div className="mt-6 grid gap-6 sm:grid-cols-3">
         <div>
           <p className="field-label">Preprocessing</p>
