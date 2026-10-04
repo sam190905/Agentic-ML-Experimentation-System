@@ -1,0 +1,1000 @@
+{
+  "comparisons": [
+    {
+      "dataset_name": "iris",
+      "baseline_result": {
+        "dataset_name": "iris",
+        "strategy": "baseline",
+        "provider": "none",
+        "experiments_run": 3,
+        "first_experiment_score": 0.9533333333333334,
+        "best_score": 0.9533333333333335,
+        "best_model": "gradient_boosting",
+        "improvement_from_first": 1.1102230246251565e-16,
+        "total_training_time_seconds": 0.22076191902160644,
+        "failed_experiments": 0,
+        "experiment_history": [
+          [
+            {
+              "experiment_id": "baseline-lr-default",
+              "config_id": "lr-default",
+              "task_type": "classification",
+              "target_column": "target",
+              "model": "logistic_regression",
+              "preprocessing": [
+                "standard_scaler"
+              ],
+              "hyperparameters": {
+                "C": 1.0,
+                "max_iter": 200,
+                "solver": "lbfgs"
+              },
+              "evaluation_metric": "accuracy",
+              "planning_reason": "Baseline fixed order: 1"
+            },
+            {
+              "experiment_id": "baseline-lr-default",
+              "status": "success",
+              "metrics": {
+                "accuracy": 0.9533333333333334
+              },
+              "training_time_seconds": 0.004050493240356445,
+              "observations": [
+                "Completed 5-fold stratified cross-validation."
+              ]
+            }
+          ],
+          [
+            {
+              "experiment_id": "baseline-rf-default",
+              "config_id": "rf-default",
+              "task_type": "classification",
+              "target_column": "target",
+              "model": "random_forest",
+              "preprocessing": [
+                "standard_scaler"
+              ],
+              "hyperparameters": {
+                "n_estimators": 100,
+                "max_depth": null,
+                "random_state": 42,
+                "n_jobs": -1
+              },
+              "evaluation_metric": "accuracy",
+              "planning_reason": "Baseline fixed order: 2"
+            },
+            {
+              "experiment_id": "baseline-rf-default",
+              "status": "success",
+              "metrics": {
+                "accuracy": 0.9466666666666667
+              },
+              "training_time_seconds": 0.09768843650817871,
+              "observations": [
+                "Completed 5-fold stratified cross-validation."
+              ]
+            }
+          ],
+          [
+            {
+              "experiment_id": "baseline-gb-default",
+              "config_id": "gb-default",
+              "task_type": "classification",
+              "target_column": "target",
+              "model": "gradient_boosting",
+              "preprocessing": [
+                "standard_scaler"
+              ],
+              "hyperparameters": {
+                "n_estimators": 100,
+                "learning_rate": 0.1,
+                "random_state": 42
+              },
+              "evaluation_metric": "accuracy",
+              "planning_reason": "Baseline fixed order: 3"
+            },
+            {
+              "experiment_id": "baseline-gb-default",
+              "status": "success",
+              "metrics": {
+                "accuracy": 0.9533333333333335
+              },
+              "training_time_seconds": 0.11902298927307128,
+              "observations": [
+                "Completed 5-fold stratified cross-validation."
+              ]
+            }
+          ]
+        ],
+        "steps": [
+          {
+            "experiment_index": 1,
+            "experiment_id": "baseline-lr-default",
+            "config_id": "lr-default",
+            "model": "logistic_regression",
+            "score": 0.9533333333333334,
+            "best_so_far": 0.9533333333333334,
+            "training_time_seconds": 0.004050493240356445,
+            "status": "success",
+            "failure_type": null
+          },
+          {
+            "experiment_index": 2,
+            "experiment_id": "baseline-rf-default",
+            "config_id": "rf-default",
+            "model": "random_forest",
+            "score": 0.9466666666666667,
+            "best_so_far": 0.9533333333333334,
+            "training_time_seconds": 0.09768843650817871,
+            "status": "success",
+            "failure_type": null
+          },
+          {
+            "experiment_index": 3,
+            "experiment_id": "baseline-gb-default",
+            "config_id": "gb-default",
+            "model": "gradient_boosting",
+            "score": 0.9533333333333335,
+            "best_so_far": 0.9533333333333335,
+            "training_time_seconds": 0.11902298927307128,
+            "status": "success",
+            "failure_type": null
+          }
+        ],
+        "best_scores_progression": {
+          "1": 0.9533333333333334,
+          "2": 0.9533333333333334,
+          "3": 0.9533333333333335
+        }
+      },
+      "agent_result": {
+        "dataset_name": "iris",
+        "strategy": "agent",
+        "provider": "gemini",
+        "experiments_run": 3,
+        "first_experiment_score": 0.9466666666666667,
+        "best_score": 0.9733333333333333,
+        "best_model": "logistic_regression",
+        "improvement_from_first": 0.026666666666666616,
+        "total_training_time_seconds": 0.10711512565612794,
+        "failed_experiments": 0,
+        "experiment_history": [
+          [
+            {
+              "experiment_id": "e12f338a-b552-4e1b-b522-0fc1b34baccb-experiment-1",
+              "config_id": "rf-default",
+              "task_type": "classification",
+              "target_column": "target",
+              "model": "random_forest",
+              "preprocessing": [
+                "standard_scaler"
+              ],
+              "hyperparameters": {
+                "n_estimators": 100,
+                "max_depth": null,
+                "random_state": 42,
+                "n_jobs": -1
+              },
+              "evaluation_metric": "accuracy",
+              "planning_reason": "Random Forest default is a strong non-linear baseline for multi-class tabular classification with balanced classes and small sample size."
+            },
+            {
+              "experiment_id": "e12f338a-b552-4e1b-b522-0fc1b34baccb-experiment-1",
+              "status": "success",
+              "metrics": {
+                "accuracy": 0.9466666666666667
+              },
+              "training_time_seconds": 0.09974150657653809,
+              "observations": [
+                "Completed 5-fold stratified cross-validation."
+              ]
+            }
+          ],
+          [
+            {
+              "experiment_id": "e12f338a-b552-4e1b-b522-0fc1b34baccb-experiment-2",
+              "config_id": "lr-default",
+              "task_type": "classification",
+              "target_column": "target",
+              "model": "logistic_regression",
+              "preprocessing": [
+                "standard_scaler"
+              ],
+              "hyperparameters": {
+                "C": 1.0,
+                "max_iter": 200,
+                "solver": "lbfgs"
+              },
+              "evaluation_metric": "accuracy",
+              "planning_reason": "Test a standard logistic regression baseline on this small, low-dimensional dataset, where linear decision boundaries often achieve very high accuracy compared to tree-based ensembles."
+            },
+            {
+              "experiment_id": "e12f338a-b552-4e1b-b522-0fc1b34baccb-experiment-2",
+              "status": "success",
+              "metrics": {
+                "accuracy": 0.9533333333333334
+              },
+              "training_time_seconds": 0.0032777786254882812,
+              "observations": [
+                "Completed 5-fold stratified cross-validation."
+              ]
+            }
+          ],
+          [
+            {
+              "experiment_id": "e12f338a-b552-4e1b-b522-0fc1b34baccb-experiment-3",
+              "config_id": "lr-weak-reg",
+              "task_type": "classification",
+              "target_column": "target",
+              "model": "logistic_regression",
+              "preprocessing": [
+                "standard_scaler"
+              ],
+              "hyperparameters": {
+                "C": 10.0,
+                "max_iter": 200,
+                "solver": "lbfgs"
+              },
+              "evaluation_metric": "accuracy",
+              "planning_reason": "Logistic regression yielded the highest validation accuracy so far (0.9533). Evaluating lr-weak-reg with weaker regularization (C=10.0) tests whether reducing regularization constraint improves performance on the Iris dataset."
+            },
+            {
+              "experiment_id": "e12f338a-b552-4e1b-b522-0fc1b34baccb-experiment-3",
+              "status": "success",
+              "metrics": {
+                "accuracy": 0.9733333333333333
+              },
+              "training_time_seconds": 0.004095840454101563,
+              "observations": [
+                "Completed 5-fold stratified cross-validation."
+              ]
+            }
+          ]
+        ],
+        "steps": [
+          {
+            "experiment_index": 1,
+            "experiment_id": "e12f338a-b552-4e1b-b522-0fc1b34baccb-experiment-1",
+            "config_id": "rf-default",
+            "model": "random_forest",
+            "score": 0.9466666666666667,
+            "best_so_far": 0.9466666666666667,
+            "training_time_seconds": 0.09974150657653809,
+            "status": "success",
+            "failure_type": null
+          },
+          {
+            "experiment_index": 2,
+            "experiment_id": "e12f338a-b552-4e1b-b522-0fc1b34baccb-experiment-2",
+            "config_id": "lr-default",
+            "model": "logistic_regression",
+            "score": 0.9533333333333334,
+            "best_so_far": 0.9533333333333334,
+            "training_time_seconds": 0.0032777786254882812,
+            "status": "success",
+            "failure_type": null
+          },
+          {
+            "experiment_index": 3,
+            "experiment_id": "e12f338a-b552-4e1b-b522-0fc1b34baccb-experiment-3",
+            "config_id": "lr-weak-reg",
+            "model": "logistic_regression",
+            "score": 0.9733333333333333,
+            "best_so_far": 0.9733333333333333,
+            "training_time_seconds": 0.004095840454101563,
+            "status": "success",
+            "failure_type": null
+          }
+        ],
+        "best_scores_progression": {
+          "1": 0.9466666666666667,
+          "2": 0.9533333333333334,
+          "3": 0.9733333333333333
+        }
+      },
+      "final_score_difference": 0.019999999999999796,
+      "best_score_difference_at_step": {
+        "1": -0.00666666666666671,
+        "2": 0.0,
+        "3": 0.019999999999999796
+      },
+      "experiments_to_reach_baseline_best": 3,
+      "final_best_model_baseline": "gradient_boosting",
+      "final_best_model_agent": "logistic_regression",
+      "interpretation": "Agent achieved a higher best score than the baseline.",
+      "agent_trace": [
+        {
+          "experiment_index": 1,
+          "config_id": "rf-default",
+          "model": "random_forest",
+          "score": 0.9466666666666667,
+          "best_so_far": 0.9466666666666667,
+          "planning_reason": "Random Forest default is a strong non-linear baseline for multi-class tabular classification with balanced classes and small sample size.",
+          "failure_type": null
+        },
+        {
+          "experiment_index": 2,
+          "config_id": "lr-default",
+          "model": "logistic_regression",
+          "score": 0.9533333333333334,
+          "best_so_far": 0.9533333333333334,
+          "planning_reason": "Test a standard logistic regression baseline on this small, low-dimensional dataset, where linear decision boundaries often achieve very high accuracy compared to tree-based ensembles.",
+          "failure_type": null
+        },
+        {
+          "experiment_index": 3,
+          "config_id": "lr-weak-reg",
+          "model": "logistic_regression",
+          "score": 0.9733333333333333,
+          "best_so_far": 0.9733333333333333,
+          "planning_reason": "Logistic regression yielded the highest validation accuracy so far (0.9533). Evaluating lr-weak-reg with weaker regularization (C=10.0) tests whether reducing regularization constraint improves performance on the Iris dataset.",
+          "failure_type": null
+        }
+      ]
+    },
+    {
+      "dataset_name": "breast_cancer",
+      "baseline_result": {
+        "dataset_name": "breast_cancer",
+        "strategy": "baseline",
+        "provider": "none",
+        "experiments_run": 3,
+        "first_experiment_score": 0.9736686849868033,
+        "best_score": 0.9736686849868033,
+        "best_model": "logistic_regression",
+        "improvement_from_first": 0.0,
+        "total_training_time_seconds": 0.32866611480712893,
+        "failed_experiments": 0,
+        "experiment_history": [
+          [
+            {
+              "experiment_id": "baseline-lr-default",
+              "config_id": "lr-default",
+              "task_type": "classification",
+              "target_column": "target",
+              "model": "logistic_regression",
+              "preprocessing": [
+                "standard_scaler"
+              ],
+              "hyperparameters": {
+                "C": 1.0,
+                "max_iter": 200,
+                "solver": "lbfgs"
+              },
+              "evaluation_metric": "accuracy",
+              "planning_reason": "Baseline fixed order: 1"
+            },
+            {
+              "experiment_id": "baseline-lr-default",
+              "status": "success",
+              "metrics": {
+                "accuracy": 0.9736686849868033
+              },
+              "training_time_seconds": 0.0042383670806884766,
+              "observations": [
+                "Completed 5-fold stratified cross-validation."
+              ]
+            }
+          ],
+          [
+            {
+              "experiment_id": "baseline-rf-default",
+              "config_id": "rf-default",
+              "task_type": "classification",
+              "target_column": "target",
+              "model": "random_forest",
+              "preprocessing": [
+                "standard_scaler"
+              ],
+              "hyperparameters": {
+                "n_estimators": 100,
+                "max_depth": null,
+                "random_state": 42,
+                "n_jobs": -1
+              },
+              "evaluation_metric": "accuracy",
+              "planning_reason": "Baseline fixed order: 2"
+            },
+            {
+              "experiment_id": "baseline-rf-default",
+              "status": "success",
+              "metrics": {
+                "accuracy": 0.9560937742586555
+              },
+              "training_time_seconds": 0.09919800758361816,
+              "observations": [
+                "Completed 5-fold stratified cross-validation."
+              ]
+            }
+          ],
+          [
+            {
+              "experiment_id": "baseline-gb-default",
+              "config_id": "gb-default",
+              "task_type": "classification",
+              "target_column": "target",
+              "model": "gradient_boosting",
+              "preprocessing": [
+                "standard_scaler"
+              ],
+              "hyperparameters": {
+                "n_estimators": 100,
+                "learning_rate": 0.1,
+                "random_state": 42
+              },
+              "evaluation_metric": "accuracy",
+              "planning_reason": "Baseline fixed order: 3"
+            },
+            {
+              "experiment_id": "baseline-gb-default",
+              "status": "success",
+              "metrics": {
+                "accuracy": 0.9490762303990063
+              },
+              "training_time_seconds": 0.22522974014282227,
+              "observations": [
+                "Completed 5-fold stratified cross-validation."
+              ]
+            }
+          ]
+        ],
+        "steps": [
+          {
+            "experiment_index": 1,
+            "experiment_id": "baseline-lr-default",
+            "config_id": "lr-default",
+            "model": "logistic_regression",
+            "score": 0.9736686849868033,
+            "best_so_far": 0.9736686849868033,
+            "training_time_seconds": 0.0042383670806884766,
+            "status": "success",
+            "failure_type": null
+          },
+          {
+            "experiment_index": 2,
+            "experiment_id": "baseline-rf-default",
+            "config_id": "rf-default",
+            "model": "random_forest",
+            "score": 0.9560937742586555,
+            "best_so_far": 0.9736686849868033,
+            "training_time_seconds": 0.09919800758361816,
+            "status": "success",
+            "failure_type": null
+          },
+          {
+            "experiment_index": 3,
+            "experiment_id": "baseline-gb-default",
+            "config_id": "gb-default",
+            "model": "gradient_boosting",
+            "score": 0.9490762303990063,
+            "best_so_far": 0.9736686849868033,
+            "training_time_seconds": 0.22522974014282227,
+            "status": "success",
+            "failure_type": null
+          }
+        ],
+        "best_scores_progression": {
+          "1": 0.9736686849868033,
+          "2": 0.9736686849868033,
+          "3": 0.9736686849868033
+        }
+      },
+      "agent_result": {
+        "dataset_name": "breast_cancer",
+        "strategy": "agent",
+        "provider": "gemini",
+        "experiments_run": 3,
+        "first_experiment_score": 0.9560937742586555,
+        "best_score": 0.9736686849868033,
+        "best_model": "logistic_regression",
+        "improvement_from_first": 0.017574910728147763,
+        "total_training_time_seconds": 0.331161642074585,
+        "failed_experiments": 0,
+        "experiment_history": [
+          [
+            {
+              "experiment_id": "f51f429e-c929-4175-86bf-748209fb29ec-experiment-1",
+              "config_id": "rf-default",
+              "task_type": "classification",
+              "target_column": "target",
+              "model": "random_forest",
+              "preprocessing": [
+                "standard_scaler"
+              ],
+              "hyperparameters": {
+                "n_estimators": 100,
+                "max_depth": null,
+                "random_state": 42,
+                "n_jobs": -1
+              },
+              "evaluation_metric": "accuracy",
+              "planning_reason": "Starting with a default Random Forest provides a strong non-linear baseline well-suited for tabular numerical features with varying scales, without requiring prior feature normalization."
+            },
+            {
+              "experiment_id": "f51f429e-c929-4175-86bf-748209fb29ec-experiment-1",
+              "status": "success",
+              "metrics": {
+                "accuracy": 0.9560937742586555
+              },
+              "training_time_seconds": 0.10053606033325195,
+              "observations": [
+                "Completed 5-fold stratified cross-validation."
+              ]
+            }
+          ],
+          [
+            {
+              "experiment_id": "f51f429e-c929-4175-86bf-748209fb29ec-experiment-2",
+              "config_id": "gb-default",
+              "task_type": "classification",
+              "target_column": "target",
+              "model": "gradient_boosting",
+              "preprocessing": [
+                "standard_scaler"
+              ],
+              "hyperparameters": {
+                "n_estimators": 100,
+                "learning_rate": 0.1,
+                "random_state": 42
+              },
+              "evaluation_metric": "accuracy",
+              "planning_reason": "Gradient boosting explores an alternate ensemble strategy (sequential boosting rather than bagging) that frequently achieves higher classification accuracy on small-to-medium tabular datasets."
+            },
+            {
+              "experiment_id": "f51f429e-c929-4175-86bf-748209fb29ec-experiment-2",
+              "status": "success",
+              "metrics": {
+                "accuracy": 0.9490762303990063
+              },
+              "training_time_seconds": 0.22696852684020996,
+              "observations": [
+                "Completed 5-fold stratified cross-validation."
+              ]
+            }
+          ],
+          [
+            {
+              "experiment_id": "f51f429e-c929-4175-86bf-748209fb29ec-experiment-3",
+              "config_id": "lr-default",
+              "task_type": "classification",
+              "target_column": "target",
+              "model": "logistic_regression",
+              "preprocessing": [
+                "standard_scaler"
+              ],
+              "hyperparameters": {
+                "C": 1.0,
+                "max_iter": 200,
+                "solver": "lbfgs"
+              },
+              "evaluation_metric": "accuracy",
+              "planning_reason": "Evaluating a linear model (Logistic Regression) introduces a distinct hypothesis class from tree-based ensembles, which is often highly competitive and interpretable on this small, feature-rich continuous dataset."
+            },
+            {
+              "experiment_id": "f51f429e-c929-4175-86bf-748209fb29ec-experiment-3",
+              "status": "success",
+              "metrics": {
+                "accuracy": 0.9736686849868033
+              },
+              "training_time_seconds": 0.0036570549011230467,
+              "observations": [
+                "Completed 5-fold stratified cross-validation."
+              ]
+            }
+          ]
+        ],
+        "steps": [
+          {
+            "experiment_index": 1,
+            "experiment_id": "f51f429e-c929-4175-86bf-748209fb29ec-experiment-1",
+            "config_id": "rf-default",
+            "model": "random_forest",
+            "score": 0.9560937742586555,
+            "best_so_far": 0.9560937742586555,
+            "training_time_seconds": 0.10053606033325195,
+            "status": "success",
+            "failure_type": null
+          },
+          {
+            "experiment_index": 2,
+            "experiment_id": "f51f429e-c929-4175-86bf-748209fb29ec-experiment-2",
+            "config_id": "gb-default",
+            "model": "gradient_boosting",
+            "score": 0.9490762303990063,
+            "best_so_far": 0.9560937742586555,
+            "training_time_seconds": 0.22696852684020996,
+            "status": "success",
+            "failure_type": null
+          },
+          {
+            "experiment_index": 3,
+            "experiment_id": "f51f429e-c929-4175-86bf-748209fb29ec-experiment-3",
+            "config_id": "lr-default",
+            "model": "logistic_regression",
+            "score": 0.9736686849868033,
+            "best_so_far": 0.9736686849868033,
+            "training_time_seconds": 0.0036570549011230467,
+            "status": "success",
+            "failure_type": null
+          }
+        ],
+        "best_scores_progression": {
+          "1": 0.9560937742586555,
+          "2": 0.9560937742586555,
+          "3": 0.9736686849868033
+        }
+      },
+      "final_score_difference": 0.0,
+      "best_score_difference_at_step": {
+        "1": -0.017574910728147763,
+        "2": -0.017574910728147763,
+        "3": 0.0
+      },
+      "experiments_to_reach_baseline_best": 3,
+      "final_best_model_baseline": "logistic_regression",
+      "final_best_model_agent": "logistic_regression",
+      "interpretation": "Agent took more experiments to reach the same best score.",
+      "agent_trace": [
+        {
+          "experiment_index": 1,
+          "config_id": "rf-default",
+          "model": "random_forest",
+          "score": 0.9560937742586555,
+          "best_so_far": 0.9560937742586555,
+          "planning_reason": "Starting with a default Random Forest provides a strong non-linear baseline well-suited for tabular numerical features with varying scales, without requiring prior feature normalization.",
+          "failure_type": null
+        },
+        {
+          "experiment_index": 2,
+          "config_id": "gb-default",
+          "model": "gradient_boosting",
+          "score": 0.9490762303990063,
+          "best_so_far": 0.9560937742586555,
+          "planning_reason": "Gradient boosting explores an alternate ensemble strategy (sequential boosting rather than bagging) that frequently achieves higher classification accuracy on small-to-medium tabular datasets.",
+          "failure_type": null
+        },
+        {
+          "experiment_index": 3,
+          "config_id": "lr-default",
+          "model": "logistic_regression",
+          "score": 0.9736686849868033,
+          "best_so_far": 0.9736686849868033,
+          "planning_reason": "Evaluating a linear model (Logistic Regression) introduces a distinct hypothesis class from tree-based ensembles, which is often highly competitive and interpretable on this small, feature-rich continuous dataset.",
+          "failure_type": null
+        }
+      ]
+    },
+    {
+      "dataset_name": "wine",
+      "baseline_result": {
+        "dataset_name": "wine",
+        "strategy": "baseline",
+        "provider": "none",
+        "experiments_run": 3,
+        "first_experiment_score": 0.9833333333333332,
+        "best_score": 0.9833333333333332,
+        "best_model": "logistic_regression",
+        "improvement_from_first": 0.0,
+        "total_training_time_seconds": 0.2836453437805176,
+        "failed_experiments": 0,
+        "experiment_history": [
+          [
+            {
+              "experiment_id": "baseline-lr-default",
+              "config_id": "lr-default",
+              "task_type": "classification",
+              "target_column": "target",
+              "model": "logistic_regression",
+              "preprocessing": [
+                "standard_scaler"
+              ],
+              "hyperparameters": {
+                "C": 1.0,
+                "max_iter": 200,
+                "solver": "lbfgs"
+              },
+              "evaluation_metric": "accuracy",
+              "planning_reason": "Baseline fixed order: 1"
+            },
+            {
+              "experiment_id": "baseline-lr-default",
+              "status": "success",
+              "metrics": {
+                "accuracy": 0.9833333333333332
+              },
+              "training_time_seconds": 0.004374933242797851,
+              "observations": [
+                "Completed 5-fold stratified cross-validation."
+              ]
+            }
+          ],
+          [
+            {
+              "experiment_id": "baseline-rf-default",
+              "config_id": "rf-default",
+              "task_type": "classification",
+              "target_column": "target",
+              "model": "random_forest",
+              "preprocessing": [
+                "standard_scaler"
+              ],
+              "hyperparameters": {
+                "n_estimators": 100,
+                "max_depth": null,
+                "random_state": 42,
+                "n_jobs": -1
+              },
+              "evaluation_metric": "accuracy",
+              "planning_reason": "Baseline fixed order: 2"
+            },
+            {
+              "experiment_id": "baseline-rf-default",
+              "status": "success",
+              "metrics": {
+                "accuracy": 0.9774603174603176
+              },
+              "training_time_seconds": 0.09892072677612304,
+              "observations": [
+                "Completed 5-fold stratified cross-validation."
+              ]
+            }
+          ],
+          [
+            {
+              "experiment_id": "baseline-gb-default",
+              "config_id": "gb-default",
+              "task_type": "classification",
+              "target_column": "target",
+              "model": "gradient_boosting",
+              "preprocessing": [
+                "standard_scaler"
+              ],
+              "hyperparameters": {
+                "n_estimators": 100,
+                "learning_rate": 0.1,
+                "random_state": 42
+              },
+              "evaluation_metric": "accuracy",
+              "planning_reason": "Baseline fixed order: 3"
+            },
+            {
+              "experiment_id": "baseline-gb-default",
+              "status": "success",
+              "metrics": {
+                "accuracy": 0.927142857142857
+              },
+              "training_time_seconds": 0.18034968376159669,
+              "observations": [
+                "Completed 5-fold stratified cross-validation."
+              ]
+            }
+          ]
+        ],
+        "steps": [
+          {
+            "experiment_index": 1,
+            "experiment_id": "baseline-lr-default",
+            "config_id": "lr-default",
+            "model": "logistic_regression",
+            "score": 0.9833333333333332,
+            "best_so_far": 0.9833333333333332,
+            "training_time_seconds": 0.004374933242797851,
+            "status": "success",
+            "failure_type": null
+          },
+          {
+            "experiment_index": 2,
+            "experiment_id": "baseline-rf-default",
+            "config_id": "rf-default",
+            "model": "random_forest",
+            "score": 0.9774603174603176,
+            "best_so_far": 0.9833333333333332,
+            "training_time_seconds": 0.09892072677612304,
+            "status": "success",
+            "failure_type": null
+          },
+          {
+            "experiment_index": 3,
+            "experiment_id": "baseline-gb-default",
+            "config_id": "gb-default",
+            "model": "gradient_boosting",
+            "score": 0.927142857142857,
+            "best_so_far": 0.9833333333333332,
+            "training_time_seconds": 0.18034968376159669,
+            "status": "success",
+            "failure_type": null
+          }
+        ],
+        "best_scores_progression": {
+          "1": 0.9833333333333332,
+          "2": 0.9833333333333332,
+          "3": 0.9833333333333332
+        }
+      },
+      "agent_result": {
+        "dataset_name": "wine",
+        "strategy": "agent",
+        "provider": "gemini",
+        "experiments_run": 3,
+        "first_experiment_score": 0.9774603174603176,
+        "best_score": 0.9833333333333332,
+        "best_model": "logistic_regression",
+        "improvement_from_first": 0.005873015873015586,
+        "total_training_time_seconds": 0.27733521461486815,
+        "failed_experiments": 0,
+        "experiment_history": [
+          [
+            {
+              "experiment_id": "4ae73e11-26b2-4c96-bbb5-b4026a9182ce-experiment-1",
+              "config_id": "rf-default",
+              "task_type": "classification",
+              "target_column": "target",
+              "model": "random_forest",
+              "preprocessing": [
+                "standard_scaler"
+              ],
+              "hyperparameters": {
+                "n_estimators": 100,
+                "max_depth": null,
+                "random_state": 42,
+                "n_jobs": -1
+              },
+              "evaluation_metric": "accuracy",
+              "planning_reason": "Starting with a robust Random Forest baseline with default settings, which performs well on small continuous tabular classification datasets without requiring feature scaling."
+            },
+            {
+              "experiment_id": "4ae73e11-26b2-4c96-bbb5-b4026a9182ce-experiment-1",
+              "status": "success",
+              "metrics": {
+                "accuracy": 0.9774603174603176
+              },
+              "training_time_seconds": 0.09858942031860352,
+              "observations": [
+                "Completed 5-fold stratified cross-validation."
+              ]
+            }
+          ],
+          [
+            {
+              "experiment_id": "4ae73e11-26b2-4c96-bbb5-b4026a9182ce-experiment-2",
+              "config_id": "gb-default",
+              "task_type": "classification",
+              "target_column": "target",
+              "model": "gradient_boosting",
+              "preprocessing": [
+                "standard_scaler"
+              ],
+              "hyperparameters": {
+                "n_estimators": 100,
+                "learning_rate": 0.1,
+                "random_state": 42
+              },
+              "evaluation_metric": "accuracy",
+              "planning_reason": "Previous experiment evaluated a baseline Random Forest with strong performance (accuracy ~0.977). Evaluating Gradient Boosting introduces an alternative boosting ensemble family on this small tabular multiclass dataset to see if sequential error correction yields higher predictive accuracy."
+            },
+            {
+              "experiment_id": "4ae73e11-26b2-4c96-bbb5-b4026a9182ce-experiment-2",
+              "status": "success",
+              "metrics": {
+                "accuracy": 0.927142857142857
+              },
+              "training_time_seconds": 0.17510452270507812,
+              "observations": [
+                "Completed 5-fold stratified cross-validation."
+              ]
+            }
+          ],
+          [
+            {
+              "experiment_id": "4ae73e11-26b2-4c96-bbb5-b4026a9182ce-experiment-3",
+              "config_id": "lr-default",
+              "task_type": "classification",
+              "target_column": "target",
+              "model": "logistic_regression",
+              "preprocessing": [
+                "standard_scaler"
+              ],
+              "hyperparameters": {
+                "C": 1.0,
+                "max_iter": 200,
+                "solver": "lbfgs"
+              },
+              "evaluation_metric": "accuracy",
+              "planning_reason": "Previous experiments tested tree-based models (Random Forest and Gradient Boosting), with Random Forest performing very well (97.7% accuracy). The Wine dataset consists entirely of continuous numerical features and is often highly linearly separable. Testing logistic regression with standard L2 regularization establishes a linear baseline and checks whether a simpler, highly interpretable linear model can match or exceed tree ensemble performance."
+            },
+            {
+              "experiment_id": "4ae73e11-26b2-4c96-bbb5-b4026a9182ce-experiment-3",
+              "status": "success",
+              "metrics": {
+                "accuracy": 0.9833333333333332
+              },
+              "training_time_seconds": 0.0036412715911865235,
+              "observations": [
+                "Completed 5-fold stratified cross-validation."
+              ]
+            }
+          ]
+        ],
+        "steps": [
+          {
+            "experiment_index": 1,
+            "experiment_id": "4ae73e11-26b2-4c96-bbb5-b4026a9182ce-experiment-1",
+            "config_id": "rf-default",
+            "model": "random_forest",
+            "score": 0.9774603174603176,
+            "best_so_far": 0.9774603174603176,
+            "training_time_seconds": 0.09858942031860352,
+            "status": "success",
+            "failure_type": null
+          },
+          {
+            "experiment_index": 2,
+            "experiment_id": "4ae73e11-26b2-4c96-bbb5-b4026a9182ce-experiment-2",
+            "config_id": "gb-default",
+            "model": "gradient_boosting",
+            "score": 0.927142857142857,
+            "best_so_far": 0.9774603174603176,
+            "training_time_seconds": 0.17510452270507812,
+            "status": "success",
+            "failure_type": null
+          },
+          {
+            "experiment_index": 3,
+            "experiment_id": "4ae73e11-26b2-4c96-bbb5-b4026a9182ce-experiment-3",
+            "config_id": "lr-default",
+            "model": "logistic_regression",
+            "score": 0.9833333333333332,
+            "best_so_far": 0.9833333333333332,
+            "training_time_seconds": 0.0036412715911865235,
+            "status": "success",
+            "failure_type": null
+          }
+        ],
+        "best_scores_progression": {
+          "1": 0.9774603174603176,
+          "2": 0.9774603174603176,
+          "3": 0.9833333333333332
+        }
+      },
+      "final_score_difference": 0.0,
+      "best_score_difference_at_step": {
+        "1": -0.005873015873015586,
+        "2": -0.005873015873015586,
+        "3": 0.0
+      },
+      "experiments_to_reach_baseline_best": 3,
+      "final_best_model_baseline": "logistic_regression",
+      "final_best_model_agent": "logistic_regression",
+      "interpretation": "Agent took more experiments to reach the same best score.",
+      "agent_trace": [
+        {
+          "experiment_index": 1,
+          "config_id": "rf-default",
+          "model": "random_forest",
+          "score": 0.9774603174603176,
+          "best_so_far": 0.9774603174603176,
+          "planning_reason": "Starting with a robust Random Forest baseline with default settings, which performs well on small continuous tabular classification datasets without requiring feature scaling.",
+          "failure_type": null
+        },
+        {
+          "experiment_index": 2,
+          "config_id": "gb-default",
+          "model": "gradient_boosting",
+          "score": 0.927142857142857,
+          "best_so_far": 0.9774603174603176,
+          "planning_reason": "Previous experiment evaluated a baseline Random Forest with strong performance (accuracy ~0.977). Evaluating Gradient Boosting introduces an alternative boosting ensemble family on this small tabular multiclass dataset to see if sequential error correction yields higher predictive accuracy.",
+          "failure_type": null
+        },
+        {
+          "experiment_index": 3,
+          "config_id": "lr-default",
+          "model": "logistic_regression",
+          "score": 0.9833333333333332,
+          "best_so_far": 0.9833333333333332,
+          "planning_reason": "Previous experiments tested tree-based models (Random Forest and Gradient Boosting), with Random Forest performing very well (97.7% accuracy). The Wine dataset consists entirely of continuous numerical features and is often highly linearly separable. Testing logistic regression with standard L2 regularization establishes a linear baseline and checks whether a simpler, highly interpretable linear model can match or exceed tree ensemble performance.",
+          "failure_type": null
+        }
+      ]
+    }
+  ]
+}

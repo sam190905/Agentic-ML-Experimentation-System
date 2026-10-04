@@ -1,13 +1,30 @@
+# Python virtual environments
 agentic/
-__pycache__/
-*.pyc
-.env
 .venv/
 venv/
+
+# Python cache
+__pycache__/
+*.pyc
 .pytest_cache/
 .ipynb_checkpoints/
+
+# Environment / secrets
+.env
+
+# Node
 node_modules/
 dist/
+
+# Data / generated runtime files
 data/*
 !data/.gitkeep
+!data/evaluation_results.json
+!data/benchmark_comparison.json
+!data/evaluation_report.md
+data/*.db
+data/*.sqlite
+data/*.sqlite3
+
+# IDE
 .vscode/
