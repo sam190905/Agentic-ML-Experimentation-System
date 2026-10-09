@@ -1,5 +1,6 @@
 """FastAPI endpoints for the ML experimentation service."""
 
+import os
 from io import BytesIO
 import logging
 from typing import Any
@@ -12,13 +13,27 @@ from app.services.experiment_service import ExperimentService
 
 logger = logging.getLogger(__name__)
 
+
+def _get_cors_origins() -> list[str]:
+    """Return the list of allowed CORS origins.
+
+    When the CORS_ORIGINS environment variable is set, its
+    comma-separated values are used as the explicit allowlist.
+    When it is not set, localhost development defaults are returned.
+    """
+    cors_env = os.getenv("CORS_ORIGINS")
+    if cors_env:
+        return [origin.strip() for origin in cors_env.split(",") if origin.strip()]
+    return [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+    ]
+
+
 app = FastAPI(title="Agentic ML Experimentation System")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",
-        "http://127.0.0.1:5173",
-    ],
+    allow_origins=_get_cors_origins(),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

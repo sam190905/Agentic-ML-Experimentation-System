@@ -1,0 +1,49 @@
+# Version control
+.git
+.gitignore
+
+# Environment and secrets
+.env
+
+# Python virtual environments
+agentic/
+.venv/
+venv/
+
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Node / frontend (deployed separately on Vercel)
+node_modules/
+dist/
+src/
+index.html
+package.json
+package-lock.json
+vite.config.ts
+tsconfig*.json
+tailwind.config.js
+postcss.config.js
+
+# Data directory (mounted as a volume at runtime)
+data/
+
+# Tests and scripts (not needed in production image)
+tests/
+scripts/
+
+# Documentation
+docs/
+README.md
+
+# UI design assets
+ui design/
+
+# Docker configuration (not needed inside the image)
+Dockerfile
+compose.yaml
+.dockerignore
